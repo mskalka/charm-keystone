@@ -1,0 +1,3 @@
+[authentication]
+simple_token_header = SimpleToken
+simple_token_secret = {{ ico_token_secret }}

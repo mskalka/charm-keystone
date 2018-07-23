@@ -35,6 +35,22 @@ from charmhelpers.core.hookenv import (
 )
 
 
+class ICOContext(context.OSContextGenerator):
+    interfaces = ['keystone-ico']
+
+    def __call__(self):
+        ctxt = {}
+        for rid in relation_ids('keystone-ico'):
+            if related_units(rid):
+                for unit in related_units(rid):
+                    rdata = relation_get(rid=rid, unit=unit)
+                    token = str(rdata.get('token-secret'))
+                    if token:
+                        ctxt['enable_ico'] = True
+                        ctxt['ico_token_secret'] = token
+
+        return ctxt
+
 class ApacheSSLContext(context.ApacheSSLContext):
     interfaces = ['https']
     external_ports = []

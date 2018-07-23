@@ -187,6 +187,8 @@ APACHE_CONF = '/etc/apache2/sites-available/openstack_https_frontend'
 APACHE_24_CONF = '/etc/apache2/sites-available/openstack_https_frontend.conf'
 MEMCACHED_CONF = '/etc/memcached.conf'
 
+KEYSTONE_PASTE_INI = '/etc/keystone/keystone-paste.ini'
+
 CLUSTER_RES = 'grp_ks_vips'
 ADMIN_DOMAIN = 'admin_domain'
 ADMIN_PROJECT = 'admin'
@@ -208,7 +210,12 @@ BASE_RESOURCE_MAP = OrderedDict([
                      context.WorkerConfigContext(),
                      context.MemcacheContext(package='keystone'),
                      keystone_context.KeystoneFIDServiceProviderContext(),
-                     keystone_context.WebSSOTrustedDashboardContext()],
+                     keystone_context.WebSSOTrustedDashboardContext(),
+                     keystone_context.ICOContext()],
+    }),
+    (KEYSTONE_PASTE_INI, {
+        'contexts': [keystone_context.ICOContext()],
+        'services': BASE_SERVICES,
     }),
     (KEYSTONE_LOGGER_CONF, {
         'contexts': [keystone_context.KeystoneLoggingContext()],

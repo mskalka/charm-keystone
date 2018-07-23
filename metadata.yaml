@@ -46,6 +46,8 @@ requires:
     interface: websso-trusted-dashboard
   certificates:
     interface: tls-certificates
+  keystone-ico:
+    interface: keystone-ico
 peers:
   cluster:
     interface: keystone-ha

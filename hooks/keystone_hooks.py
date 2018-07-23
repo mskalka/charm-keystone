@@ -82,6 +82,7 @@ from keystone_utils import (
     services,
     CLUSTER_RES,
     KEYSTONE_CONF,
+    KEYSTONE_PASTE_INI,
     POLICY_JSON,
     TOKEN_FLUSH_CRON_FILE,
     setup_ipv6,
@@ -780,6 +781,16 @@ def certs_changed(relation_id=None, unit=None):
     write_certs_and_config()
     update_all_identity_relation_units()
     update_all_domain_backends()
+
+
+@hooks.hook('keystone-ico-relation-joined',
+            'keystone-ico-relation-changed',
+            'keystone-ico-relation-broken',
+            'keystone-ico-relation-departed')
+@restart_on_change(restart_map())
+def keystone_ico_changed():
+    CONFIGS.write(KEYSTONE_CONF)
+    CONFIGS.write(KEYSTONE_PASTE_INI)
 
 
 def main():
